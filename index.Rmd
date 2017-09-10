@@ -57,8 +57,11 @@ In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we expl
 suppressPackageStartupMessages({library(plotly)})
 library(plotly)
 g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
-     geom_point() +
-     geom_line(aes(group = SCC.Level.One))
+      geom_point() +
+      geom_line(aes(group = SCC.Level.One)) +
+      theme(legend.position = "right",
+            legend.text = element_text(colour = "black", size = 6),
+            legend.title = element_text(colour = "black", size = 6))
 
 gg <- ggplotly(g)
 
