@@ -56,12 +56,13 @@ In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we expl
 
 <p style="page-break-before: always">
 ```{r create_plot, fig.align = 'center', fig.heigth = 5, fig.width = 5, fig.keep ='high'}
-# g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
-#       geom_point() +
-#       geom_line(aes(group = SCC.Level.One))
+g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
+     geom_point() +
+     geom_line(aes(group = SCC.Level.One))
 
-# ggplotly(g)
+gg <- ggplotly(g)
 
+plotly_POST(gg)
 
 # ui <- fluidPage(
 #      plotlyOutput("plot"),
@@ -83,16 +84,16 @@ In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we expl
 
 
 
-p <- plot_ly(NEIagg, x = ~year, y = ~Emissions, color = ~SCC.Level.One,
-             type = 'scatter', mode = 'lines+markers') %>%
-      layout(
-            title = "Southwest Ohio Emission Levels",
-            scene = list(
-                  xaxis = list(title = "Measurement Year"),
-                  yaxis = list(title = "Avg Emissions")
-            ))
+# p <- plot_ly(NEIagg, x = ~year, y = ~Emissions, color = ~SCC.Level.One,
+#              type = 'scatter', mode = 'lines+markers') %>%
+#       layout(
+#             title = "Southwest Ohio Emission Levels",
+#             scene = list(
+#                   xaxis = list(title = "Measurement Year"),
+#                   yaxis = list(title = "Avg Emissions")
+#             ))
 
-print(p)
+# plotly_POST(p, filename = "r-docs/emissions-linegraphs")
 
 ## iframe src="https://plot.ly/~RPlotBot/501.embed"
 ##         height="600" width="100%"
