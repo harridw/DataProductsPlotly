@@ -62,7 +62,7 @@ g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
 
 gg <- ggplotly(g)
 
-plotly_POST(gg)
+gg
 
 # ui <- fluidPage(
 #      plotlyOutput("plot"),
