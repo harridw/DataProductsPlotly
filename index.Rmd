@@ -1,7 +1,7 @@
 ---
 title: "Plotly Graph - Emissions"
 author: "Edward Harris"
-date: "9/9/2017"
+date: "`r format(Sys.time(), '%d-%B-%Y')`"
 output: ioslides_presentation
 ---
 
