@@ -1,0 +1,111 @@
+---
+title: "Plotly Graph - Emissions"
+author: "Edward Harris"
+date: "9/9/2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE, echo = FALSE, fig.keep = "high")
+```
+
+```{r R_packages, results = "hide"}
+ipak <- function(pkg){
+      new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+      if (length(new.pkg)) 
+            install.packages(new.pkg, dependencies = TRUE)
+      sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "plyr", "dplyr", "data.table", "reshape2", "RColorBrewer", 
+                  "scales", "grid", "shiny", "miniUI", "plotly", "devtools", "htmltools")
+ipak(packages)
+
+install_github("plotly", "ropensci", "ropensci/plotly")
+```
+
+```{r read_files, results = "hide", cache = TRUE}
+#  Read data into R  [assumes files are in working directory]
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+
+# Create subset for Southwest Ohio FIPS
+SWOH.FIPS <- c("39061", "39025", "39015", "39001",
+               "39071", "39027", "39165", "39017",
+               "39135", "39113", "39057", "39047")
+NEI.SWOH <- subset(NEI, fips %in% SWOH.FIPS)
+NEI.SWOH <- unique(NEI.SWOH)
+NEI.SWOH <- merge(NEI.SWOH, SCC, by.NEI.SWOH = "SCC", by.SCC = "SCC", all.NEI.SWOH = TRUE)
+```
+
+```{r file_smry, results = "hide"}
+# Calculate Average / Mean Emissions by year & SCC.Level.One
+NEI.SWOH <- select(NEI.SWOH, year, fips, SCC.Level.One, Emissions)
+NEI.SWOH$SCC.Level.One <- as.character(NEI.SWOH$SCC.Level.One)
+NEIagg <- aggregate(Emissions ~ year + SCC.Level.One, data = NEI.SWOH, FUN = mean)
+```
+
+<p style="page-break-before: always">
+## Emissions Data in the United States
+In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we explored the National Emissions Inventory database and see what it says about fine particulate matter pollution in the United States over the 10-year period 1999–2008.  The data provided by instructors was contained in two data sets, then a subset is used:  
+1. PM2.5 Emiisions Data (summarySCC_PM25.rds) is a data frame that contains all of the PM2.5 emissions data for 1999, 2002, 2005, and 2008.    
+2. Sourece Classification Code Table (Source_Classification_Code.rds) provides a mapping from the SCC digit strings in the Emissions table to the actual name of the PM2.5 source.  
+3. Subset for 12 southwest Ohio counties defined using fips.    
+---
+
+<p style="page-break-before: always">
+```{r create_plot, fig.align = 'center', fig.heigth = 5, fig.width = 5, fig.keep ='high'}
+# g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
+#       geom_point() +
+#       geom_line(aes(group = SCC.Level.One))
+
+# ggplotly(g)
+
+
+# ui <- fluidPage(
+#      plotlyOutput("plot"),
+#      verbatimTextOutput("Southern Ohio Emissions")
+# )
+
+# server <- function(input, output) {
+#      output$plot <- renderPlotly({
+#            plot_ly(NEIagg, x = ~year, y = ~Emissions, color = ~SCC.Level.One,
+#            type = 'scatter', mode = 'lines+markers')
+#      })
+#      output$event <- renderPrint({
+#            d <- event_data("plotly_hover")
+#            if(is.null(d)) "Hover on a point!" else d
+#      })
+# }
+
+# shinyApp(ui, server)
+
+
+
+p <- plot_ly(NEIagg, x = ~year, y = ~Emissions, color = ~SCC.Level.One,
+             type = 'scatter', mode = 'lines+markers') %>%
+      layout(
+            title = "Southwest Ohio Emission Levels",
+            scene = list(
+                  xaxis = list(title = "Measurement Year"),
+                  yaxis = list(title = "Avg Emissions")
+            ))
+
+print(p)
+
+## iframe src="https://plot.ly/~RPlotBot/501.embed"
+##         height="600" width="100%"
+##         scrolling="no" seamless="seamless"
+##         frameBorder="0"
+## </iframe>
+
+
+#htmltools::includeHTML("p.html")
+
+```
+---
+
+
+
+
