@@ -46,7 +46,6 @@ NEI.SWOH$SCC.Level.One <- as.character(NEI.SWOH$SCC.Level.One)
 NEIagg <- aggregate(Emissions ~ year + SCC.Level.One, data = NEI.SWOH, FUN = mean)
 ```
 
-<p style="page-break-before: always">
 ## Emissions Data in the United States
 In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we explored the National Emissions Inventory database and see what it says about fine particulate matter pollution in the United States over the 10-year period 1999–2008.  The data provided by instructors was contained in two data sets, then a subset is used:  
 1. PM2.5 Emiisions Data (summarySCC_PM25.rds) is a data frame that contains all of the PM2.5 emissions data for 1999, 2002, 2005, and 2008.    
@@ -54,7 +53,6 @@ In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we expl
 3. Subset for 12 southwest Ohio counties defined using fips.    
 ---
 
-<p style="page-break-before: always">
 ```{r create_plot, fig.align = 'center', fig.keep ='high'}
 g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
      geom_point() +
