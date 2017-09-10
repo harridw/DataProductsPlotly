@@ -59,9 +59,9 @@ library(plotly)
 g <- ggplot(NEIagg, aes(x = year, y = Emissions, color = SCC.Level.One)) +
       geom_point() +
       geom_line(aes(group = SCC.Level.One)) +
-      theme(legend.position = "right",
-            legend.text = element_text(colour = "black", size = 6),
-            legend.title = element_text(colour = "black", size = 6))
+      theme(legend.position = c(7,1),
+            legend.text = element_text(colour = "black", size = 4),
+            legend.title = element_text(colour = "black", size = 4))
 
 gg <- ggplotly(g)
 
