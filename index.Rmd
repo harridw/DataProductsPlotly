@@ -9,7 +9,7 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE, fig.keep = "high")
 ```
 
-```{r R_packages, results = "hide"}
+```{r R_packages, include = FALSE, results = "hide"}
 ipak <- function(pkg){
       new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
       if (length(new.pkg)) 
@@ -25,7 +25,7 @@ ipak(packages)
 install_github("ropensci/plotly")
 ```
 
-```{r read_files, results = "hide", cache = TRUE}
+```{r read_files, include = FALSE, results = "hide", cache = TRUE}
 #  Read data into R  [assumes files are in working directory]
 NEI <- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
@@ -39,20 +39,20 @@ NEI.SWOH <- unique(NEI.SWOH)
 NEI.SWOH <- merge(NEI.SWOH, SCC, by.NEI.SWOH = "SCC", by.SCC = "SCC", all.NEI.SWOH = TRUE)
 ```
 
-```{r file_smry, results = "hide"}
+```{r file_smry, include = FALSE, results = "hide"}
 # Calculate Average / Mean Emissions by year & SCC.Level.One
 NEI.SWOH <- select(NEI.SWOH, year, fips, SCC.Level.One, Emissions)
 NEI.SWOH$SCC.Level.One <- as.character(NEI.SWOH$SCC.Level.One)
 NEIagg <- aggregate(Emissions ~ year + SCC.Level.One, data = NEI.SWOH, FUN = mean)
 ```
 
-## Emissions Data in the United States
+## Emissions Data in the United States {.smaller}
 In the Data Science Specialtization: Course 4 Exploratory Data Analysis, we explored the National Emissions Inventory database and see what it says about fine particulate matter pollution in the United States over the 10-year period 1999–2008.  The data provided by instructors was contained in two data sets, then a subset is used:  
 1. PM2.5 Emiisions Data (summarySCC_PM25.rds) is a data frame that contains all of the PM2.5 emissions data for 1999, 2002, 2005, and 2008.    
 2. Sourece Classification Code Table (Source_Classification_Code.rds) provides a mapping from the SCC digit strings in the Emissions table to the actual name of the PM2.5 source.   
-3. Subset for 12 southwest Ohio counties defined using fips.    
----
+3. Subset for 12 southwest Ohio counties defined using fips.  
 
+## Southwest Ohio Emissions (Plotly)  
 ```{r create_plot, fig.align = 'center', warning = FALSE}
 suppressPackageStartupMessages({library(plotly)})
 library(plotly)
